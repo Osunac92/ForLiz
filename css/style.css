@@ -1,0 +1,651 @@
+/* ============================================
+   TOKENS
+   ============================================ */
+:root{
+  --bg-void: #05050f;
+  --bg-nebula: #0d1130;
+  --rose: #f7c5d8;
+  --rose-soft: #f7c5d833;
+  --rose-glow: #f7c5d866;
+  --gold: #e8c874;
+  --text-main: #f4f1ff;
+  --text-dim: #b9b6d6;
+  --red-pulse: #c9184a;
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Jost', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  background: var(--bg-void);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ============================================
+   BACKGROUND LAYERS
+   ============================================ */
+#stars-canvas{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.nebula-glow{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 15%, var(--rose-soft), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 85% 70%, #4a3a6633, transparent 60%),
+    radial-gradient(ellipse 45% 30% at 50% 95%, var(--rose-soft), transparent 60%);
+  mix-blend-mode: screen;
+}
+
+#progress-bar{
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 100;
+  background: transparent;
+}
+#progress-fill{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  box-shadow: 0 0 8px var(--rose-glow);
+  transition: width .1s linear;
+}
+
+/* ============================================
+   SCENES — layout base
+   ============================================ */
+.scene{
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8vh 6vw;
+}
+
+.scene-content{
+  max-width: 720px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+}
+.scene-content.narrow{ max-width: 560px; }
+.scene-content.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow{
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 1.4rem;
+  opacity: .85;
+}
+
+.scene-title{
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  margin-bottom: 1.6rem;
+  color: var(--text-main);
+}
+
+.scene-text{
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.75;
+  color: var(--text-main);
+  opacity: .82;
+  max-width: 620px;
+  margin: 0 auto 1.2rem;
+  font-weight: 300;
+}
+.scene-text.italic{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--rose);
+}
+.scene-text.small{ font-size: .95rem; opacity: .75; }
+
+/* ============================================
+   SCENE 0 — OPENING
+   ============================================ */
+#scene-open{ position: relative; }
+
+.spark{
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--text-main);
+  box-shadow: 0 0 20px 6px var(--rose-glow);
+  animation: ignite 2.6s var(--ease-out) forwards;
+}
+@keyframes ignite{
+  0%{ width:4px; height:4px; box-shadow: 0 0 4px 2px var(--rose-glow); opacity: 1; }
+  60%{ width: 220px; height: 220px; box-shadow: 0 0 120px 60px var(--rose-glow); opacity: .5; }
+  100%{ width: 340px; height: 340px; box-shadow: 0 0 0 0 transparent; opacity: 0; }
+}
+
+.title-main{
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(3rem, 11vw, 7rem);
+  display: flex;
+  gap: clamp(.6rem, 2.5vw, 1.8rem);
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.title-main .line{
+  opacity: 0;
+  transform: translateY(30px);
+  animation: rise-in 1.2s var(--ease-out) forwards;
+}
+.line-1{ animation-delay: 1.4s !important; }
+.line-amp{
+  font-style: italic;
+  color: var(--rose);
+  font-size: .75em;
+  animation-delay: 1.8s !important;
+}
+.line-2{ animation-delay: 2.2s !important; }
+@keyframes rise-in{
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+.subtitle{
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  letter-spacing: .12em;
+  color: var(--text-dim);
+  margin-top: 1.6rem;
+}
+.fade-in-late{
+  opacity: 0;
+  animation: fade-up 1.4s var(--ease-out) forwards;
+  animation-delay: 2.8s;
+}
+@keyframes fade-up{
+  to{ opacity: .8; }
+}
+
+.scroll-hint{
+  position: absolute;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  opacity: 0;
+  animation: fade-up 1.2s var(--ease-out) forwards;
+  animation-delay: 3.4s;
+}
+.scroll-hint span{
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.scroll-arrow{
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(var(--rose), transparent);
+  animation: pulse-down 1.8s ease-in-out infinite;
+}
+@keyframes pulse-down{
+  0%,100%{ opacity: .3; }
+  50%{ opacity: 1; }
+}
+
+/* ============================================
+   SCENE 1 — ORIGIN / BIG BANG
+   ============================================ */
+#scene-origin{ position: relative; overflow: hidden; }
+
+.bigbang{
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: transparent;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 0 0 var(--rose-glow);
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+.bigbang.trigger{
+  animation: bigbang-burst 2.8s var(--ease-out) forwards;
+}
+@keyframes bigbang-burst{
+  0%{ opacity: 1; box-shadow: 0 0 30px 14px var(--rose-glow); width: 2px; height: 2px; }
+  100%{ opacity: 1; box-shadow: 0 0 260px 160px transparent; width: 60px; height: 60px; }
+}
+
+/* ============================================
+   SCENE 3 — CONSTELLATION
+   ============================================ */
+#constellation-svg{
+  width: min(90vw, 800px);
+  height: auto;
+  margin-top: 2rem;
+  overflow: visible;
+}
+.const-line{
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: .55;
+  stroke-dasharray: 6 6000;
+  stroke-dashoffset: 0;
+}
+.const-line.draw{
+  animation: draw-line 2.4s var(--ease-out) forwards;
+}
+@keyframes draw-line{
+  from{ stroke-dasharray: 6000; stroke-dashoffset: 6000; }
+  to{ stroke-dasharray: 6000; stroke-dashoffset: 0; }
+}
+.const-dot{
+  fill: var(--text-main);
+  opacity: 0;
+  transform-origin: center;
+}
+.const-dot.show{
+  animation: dot-pop .6s var(--ease-out) forwards;
+}
+@keyframes dot-pop{
+  0%{ opacity: 0; transform: scale(0); }
+  70%{ opacity: 1; transform: scale(1.4); }
+  100%{ opacity: 1; transform: scale(1); }
+}
+.const-label{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 42px;
+  fill: var(--rose);
+  opacity: 0;
+  text-anchor: middle;
+}
+.const-label.show{
+  animation: fade-up 1.4s var(--ease-out) forwards;
+}
+
+/* ============================================
+   SCENE 4 — GALLERY / ORBIT
+   ============================================ */
+.orbit-field{
+  position: relative;
+  width: min(92vw, 900px);
+  height: min(80vh, 640px);
+  margin-top: 2rem;
+}
+.orbit-photo{
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--rose-glow);
+  box-shadow: 0 0 30px -4px var(--rose-glow);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(.6);
+  transition: transform .25s var(--ease-out), box-shadow .25s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.orbit-photo.show{
+  animation: orbit-in .9s var(--ease-out) forwards;
+}
+.orbit-photo:hover,
+.orbit-photo:active{
+  transform: scale(1.08);
+  box-shadow: 0 0 44px 4px var(--rose-glow);
+}
+@keyframes orbit-in{
+  to{ opacity: 1; transform: scale(1); }
+}
+.orbit-photo img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.orbit-photo .fallback{
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-nebula);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--rose);
+  font-size: .85rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* photo modal */
+.photo-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(5,5,15,.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s var(--ease-out);
+  padding: 6vh 6vw;
+}
+.photo-modal.open{
+  opacity: 1;
+  pointer-events: all;
+}
+.photo-modal-inner{
+  position: relative;
+  max-width: 560px;
+  text-align: center;
+}
+.photo-modal-inner img{
+  max-width: 100%;
+  max-height: 62vh;
+  border-radius: 10px;
+  box-shadow: 0 0 60px var(--rose-glow);
+}
+.photo-modal-inner p{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--rose);
+  margin-top: 1.4rem;
+}
+#photo-modal-close{
+  position: absolute;
+  top: -2.4rem; right: 0;
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: .7;
+}
+#photo-modal-close:hover{ opacity: 1; }
+
+/* ============================================
+   SCENE 5 — COUNTER
+   ============================================ */
+.counter-grid{
+  display: flex;
+  gap: clamp(1rem, 4vw, 2.6rem);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.counter-unit{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+}
+.counter-num{
+  font-family: var(--font-mono);
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  color: var(--rose);
+  text-shadow: 0 0 24px var(--rose-glow);
+}
+.counter-label{
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: .4rem;
+}
+.counter-note{ margin-top: 2.2rem; }
+
+/* ============================================
+   SCENE 5.5 — CORAZÓN CRECIENTE
+   ============================================ */
+#scene-heart{ position: relative; }
+
+.grow-heart{
+  position: relative;
+  width: 100px;
+  height: 90px;
+  margin-top: 3rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .25s var(--ease-out);
+}
+.grow-heart:active{ transform: scale(.95); }
+
+/* Corazón hecho con un cuadrado rotado 45° + dos círculos del mismo tamaño
+   pegados en los bordes superiores del cuadrado, formando los "lóbulos". */
+.grow-heart-shape{
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  
+  background: var(--rose);
+  box-shadow: 0 0 20px var(--rose-glow);
+  animation: heart-pulse 2.4s infinite ease-in-out;
+}
+.grow-heart-shape::before,
+.grow-heart-shape::after{
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  background: var(--rose);
+  border-radius: 50%;
+}
+.grow-heart-shape::before{
+  top: 0;
+  left: -23px;
+}
+.grow-heart-shape::after{
+  top: -23px;
+  left: 0;
+}
+@keyframes heart-pulse{
+  0%, 100%{ transform: translateX(-50%) rotate(-45deg) scale(1); }
+  50%{ transform: translateX(-50%) rotate(-45deg) scale(1.08); }
+}
+
+.grow-heart-message{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+  color: var(--rose);
+  max-width: 560px;
+  margin-top: 3rem;
+  line-height: 1.6;
+  opacity: 0;
+  transition: opacity 1s var(--ease-out);
+}
+.grow-heart-message.show{ opacity: 1; }
+
+
+/* ============================================
+   SCENE 6 — HIDDEN MESSAGE
+   ============================================ */
+.hidden-field{
+  position: relative;
+  width: min(92vw, 760px);
+  height: min(50vh, 380px);
+  margin-top: 1rem;
+}
+.hidden-star{
+  position: absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 3px var(--gold);
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform .25s var(--ease-out);
+  animation: twinkle 2.4s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+.hidden-star::before{
+  /* zona táctil invisible más grande que el punto visual, para el dedo */
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
+}
+.hidden-star:active{ transform: scale(1.35); }
+.hidden-star:hover{ transform: scale(1.3); }
+.hidden-star.found{
+  background: var(--rose);
+  box-shadow: 0 0 18px 6px var(--rose-glow);
+  animation: none;
+  transform: scale(1.2);
+}
+@keyframes twinkle{
+  0%,100%{ opacity: .55; }
+  50%{ opacity: 1; }
+}
+.revealed-phrase{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--rose);
+  margin-top: 2.4rem;
+  min-height: 2.4em;
+  letter-spacing: .02em;
+}
+
+/* ============================================
+   SCENE 7 — LETTER
+   ============================================ */
+.letter{ max-width: 640px; }
+.letter-text{
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.85;
+  color: var(--text-main);
+  margin-bottom: 1.6rem;
+  text-align: left;
+}
+.letter-signoff{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  color: var(--rose);
+  margin: 2rem 0 2.4rem;
+  text-align: center;
+}
+.letter-thanks{
+  font-size: .95rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+.letter-atte{
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  letter-spacing: .1em;
+  color: var(--rose);
+}
+
+/* ============================================
+   SCENE 8 — FINAL
+   ============================================ */
+#scene-final{ position: relative; }
+.final-content{
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity 1.6s var(--ease-out), transform 1.6s var(--ease-out);
+}
+.final-content.in-view{
+  opacity: 1;
+  transform: scale(1);
+}
+.final-pre{
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 1.6rem;
+}
+.final-words{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.3;
+  background: linear-gradient(120deg, var(--text-main), var(--rose), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.final-heart{
+  width: 10px; height: 10px;
+  background: var(--rose);
+  border-radius: 50%;
+  margin: 3rem auto 0;
+  box-shadow: 0 0 30px 10px var(--rose-glow);
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+@keyframes heartbeat{
+  0%,100%{ transform: scale(1); }
+  25%{ transform: scale(1.4); }
+  40%{ transform: scale(1); }
+  55%{ transform: scale(1.25); }
+  70%{ transform: scale(1); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px){
+  .scene{ padding: 6vh 7vw; }
+  .orbit-field{ height: min(75vh, 560px); }
+  .orbit-photo{ width: 92px; height: 92px; }
+  .counter-grid{ gap: .8rem; }
+  .letter-text{ text-align: left; }
+  .photo-modal-inner img{ max-height: 50vh; }
+}

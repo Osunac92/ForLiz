@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J + L — Hasta el infinito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+<div class="nebula-glow"></div>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- ESCENA 0: APERTURA -->
+<section class="scene" id="scene-open">
+  <div class="spark" id="ignite-spark"></div>
+  <h1 class="title-main">
+    <span class="line line-1">Juan</span>
+    <span class="line line-amp">&</span>
+    <span class="line line-2">Liz</span>
+  </h1>
+  <p class="subtitle fade-in-late">una historia que empezó el 15 de agosto</p>
+  <div class="scroll-hint">
+    <span>desliza para empezar el viaje</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ESCENA 1: EL ORIGEN -->
+<section class="scene" id="scene-origin">
+  <div class="scene-content">
+    <p class="eyebrow">15 de agosto — el origen</p>
+    <h2 class="scene-title">Todo empezó con un mensaje</h2>
+    <p class="scene-text">
+      Tan pocos días han pasado y, sin embargo, te has convertido en una pieza
+      fundamental en mi vida. Le diste un giro completo y llegaste a darle
+      sentido a mis días.
+    </p>
+    <p class="scene-text italic">
+      No me arrepiento de haberte conocido.
+    </p>
+  </div>
+  <div class="bigbang" id="bigbang"></div>
+</section>
+
+<!-- ESCENA 2: DOS LOCOS -->
+<section class="scene" id="scene-locos">
+  <div class="scene-content narrow">
+    <p class="eyebrow">lo que somos</p>
+    <h2 class="scene-title">Dos locos que por fin se encontraron</h2>
+    <p class="scene-text">
+      A veces creo que solo somos dos locos que por tanto tiempo esperaron
+      ser amados y que por fin se encontraron. No me arrepiento de darte
+      todo lo que tengo, porque sé que tú lo aprecias.
+    </p>
+  </div>
+</section>
+
+<!-- ESCENA 3: CONSTELACIÓN -->
+<section class="scene" id="scene-constellation">
+  <div class="scene-content">
+    <p class="eyebrow">nuestra constelación</p>
+    <h2 class="scene-title">J + L, escrito en el cielo</h2>
+  </div>
+  <svg id="constellation-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+    <!-- Líneas y puntos generados por JS -->
+  </svg>
+</section>
+
+<!-- ESCENA 4: GALERÍA — ella -->
+<section class="scene" id="scene-gallery">
+  <div class="scene-content">
+    <p class="eyebrow">me enamoré de</p>
+    <h2 class="scene-title">Tu nobleza, tu carita, hasta tus celos</h2>
+    <p class="scene-text small">toca una foto para verla mejor</p>
+  </div>
+  <div class="orbit-field" id="orbit-field">
+    <!-- Planetas/fotos generados por JS -->
+  </div>
+</section>
+
+<!-- MODAL de foto -->
+<div class="photo-modal" id="photo-modal">
+  <div class="photo-modal-inner">
+    <img id="photo-modal-img" src="" alt="">
+    <p id="photo-modal-caption"></p>
+    <button id="photo-modal-close" aria-label="Cerrar">✕</button>
+  </div>
+</div>
+
+<!-- ESCENA 5: CONTADOR -->
+<section class="scene" id="scene-counter">
+  <div class="scene-content">
+    <p class="eyebrow">desde el 15 de agosto</p>
+    <h2 class="scene-title">Llevamos amándonos</h2>
+    <div class="counter-grid" id="counter-grid">
+      <div class="counter-unit"><span class="counter-num" id="c-days">00</span><span class="counter-label">días</span></div>
+      <div class="counter-unit"><span class="counter-num" id="c-hours">00</span><span class="counter-label">horas</span></div>
+      <div class="counter-unit"><span class="counter-num" id="c-mins">00</span><span class="counter-label">min</span></div>
+      <div class="counter-unit"><span class="counter-num" id="c-secs">00</span><span class="counter-label">seg</span></div>
+    </div>
+    <p class="scene-text small counter-note">y sigue corriendo, como las ganas de verte</p>
+  </div>
+</section>
+
+<!-- ESCENA 5.5: CORAZÓN CRECIENTE -->
+<section class="scene" id="scene-heart">
+  <div class="scene-content">
+    <p class="eyebrow">tócalo</p>
+    <h2 class="scene-title">Haz crecer este corazón</h2>
+    <p class="scene-text small">cada toque es un poquito más de todo lo que siento</p>
+  </div>
+  <button class="grow-heart" id="grow-heart" aria-label="Tocar corazón">
+    <span class="grow-heart-shape"></span>
+  </button>
+  <p class="grow-heart-message" id="grow-heart-message"></p>
+</section>
+
+
+
+<!-- ESCENA 6: MENSAJE OCULTO INTERACTIVO -->
+<section class="scene" id="scene-hidden">
+  <div class="scene-content">
+    <p class="eyebrow">un secreto entre las estrellas</p>
+    <h2 class="scene-title">Toca las estrellas que brillan</h2>
+    <p class="scene-text small">hay una frase escondida en el cielo</p>
+  </div>
+  <div class="hidden-field" id="hidden-field"></div>
+  <p class="revealed-phrase" id="revealed-phrase"></p>
+</section>
+
+<!-- ESCENA 7: CARTA COMPLETA -->
+<section class="scene" id="scene-letter">
+  <div class="scene-content letter">
+    <p class="eyebrow">para ti, Liz</p>
+    <p class="letter-text">
+      Me he enamorado de tu nobleza, de tu linda carita, de tus mensajes
+      empalagosos y hasta de tus celos. Quizá aún hay mucho que debemos
+      conocernos, pero sabes algo: tengo una vida entera para hacerlo.
+    </p>
+    <p class="letter-text">
+      Hoy quiero expresarte lo mucho que te amo, lo importante que eres
+      para mí y las ganas enormes que tengo de por fin verte, abrazarte,
+      darte muchos besos y hacerte sentir especial, porque realmente lo eres.
+    </p>
+    <p class="letter-text">
+      Enamorarme de ti fue lo más fácil que he hecho en mi vida, pero no
+      pienso detenerme ahí: deseo construir un futuro contigo, algo donde
+      por fin seamos y, si Dios me lo permite, quedarme a tu lado para el
+      resto de mi vida, hasta que el blanco pinte nuestros cabellos y los
+      huesos nos duelan.
+    </p>
+    <p class="letter-signoff">
+      Te amo, Liz... mi duende de ciudad, mi vida, mi amor, mi reina.
+    </p>
+    <p class="letter-thanks">
+      Gracias por hacerme el hombre más feliz.<br>
+      <span class="letter-atte">Atte. Osuna</span>
+    </p>
+  </div>
+</section>
+
+<!-- ESCENA 8: CIERRE -->
+<section class="scene" id="scene-final">
+  <div class="final-content">
+    <p class="final-pre">jiganton &amp; duende de ciudad</p>
+    <h2 class="final-words">Hasta el infinito,<br>y más allá de él.</h2>
+    <div class="final-heart" id="final-heart"></div>
+  </div>
+</section>
+
+<script src="js/stars.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
