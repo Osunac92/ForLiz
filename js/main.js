@@ -133,11 +133,11 @@ spark.style.top = '38%';
 (function buildOrbit(){
   const field = document.getElementById('orbit-field');
   const positions = [
-    { top: '2%',  left: '4%'  },
-    { top: '4%',  left: '54%' },
-    { top: '34%', left: '26%' },
-    { top: '62%', left: '2%'  },
-    { top: '64%', left: '56%' }
+    { top: '2%',  left: '2%'  },
+    { top: '4%',  left: '46%' },
+    { top: '34%', left: '22%' },
+    { top: '60%', left: '2%'  },
+    { top: '60%', left: '46%' }
   ];
 
   CONFIG.photos.forEach((photo, i) => {
@@ -264,8 +264,8 @@ function closePhotoModal(){
   const cols = Math.ceil(Math.sqrt(words.length));
   words.forEach((word, i) => {
     positions.push({
-      top: (10 + Math.random() * 75) + '%',
-      left: (6 + (i % cols) * (85 / cols) + Math.random() * 8) + '%'
+      top: (8 + Math.random() * 74) + '%',
+      left: (4 + (i % cols) * (80 / cols) + Math.random() * 6) + '%'
     });
   });
 
