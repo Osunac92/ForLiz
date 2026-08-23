@@ -94,6 +94,8 @@ body{
   justify-content: center;
   text-align: center;
   padding: 8vh 6vw;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .scene-content{
@@ -317,9 +319,10 @@ body{
    ============================================ */
 .orbit-field{
   position: relative;
-  width: min(92vw, 900px);
+  width: min(88vw, 900px);
   height: min(80vh, 640px);
   margin-top: 2rem;
+  overflow: hidden;
 }
 .orbit-photo{
   position: absolute;
@@ -517,9 +520,10 @@ body{
    ============================================ */
 .hidden-field{
   position: relative;
-  width: min(92vw, 760px);
+  width: min(88vw, 760px);
   height: min(50vh, 380px);
   margin-top: 1rem;
+  overflow: hidden;
 }
 .hidden-star{
   position: absolute;
